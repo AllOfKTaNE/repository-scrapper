@@ -23,6 +23,16 @@ jobs:
             return 1
           }
 
+          function fork {
+            curl \
+              -X POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "Authorization: Bearer $TOKEN" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              $1 \
+              -d "$2"
+          }
+
           # get source code links from ktane.timwi.de
           repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-5)
           # get list of forked repositories
@@ -30,37 +40,26 @@ jobs:
             -H "Accept: application/vnd.github+json" \
            /orgs/KTaNE-noi2coco/repos | jq -r '.[].name')
 
-          forkname=$(echo "$repo" | sed 's#/#-#g')
-          if isforked($repos, $forkname); then
-            continue
-          fi
-          
-          # Fork the new repository
-          echo "Forking $repo" as "$json"
-          json=$(jq -n --arg name "$repo" '{"organization":"KTaNE-noi2coco", "name": $name, "default_branch_only": false}')
-          out=$(curl \
-            -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $TOKEN" \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/${repo}/forks \
-            -d "$json")
-          message=$(jq -r ".message" <<< "$out")
-          echo "Message: $message"
-          if [ "$message" = "Not Found" ]; then
-            getrepo=$(gh api -H "Accept: application/vnd.github+json" /repos/${repo})
-            message=$(jq ".message" <<< "$getrepo") 
-            if [ "$message" = "Moved Permanently" ]; then
-              url=$(jq -r ".url" <<< "$getrepo")
-              echo "Forking $url" as "$json"
-              curl \
-                -X POST \
-                -H "Accept: application/vnd.github+json" \
-                -H "Authorization: Bearer $TOKEN" \
-                -H "X-GitHub-Api-Version: 2022-11-28" \
-                $url \
-                -d "$json"
+          for repo in $repos; do
+            forkname=$(echo "$repo" | sed 's#/#-#g')
+            if isforked($repos, $forkname); then
+              continue
             fi
-          fi
-          sleep 5
+            
+            # Fork the new repository
+            echo "Forking $repo" as "$json"
+            json=$(jq -n --arg name "$repo" '{"organization":"KTaNE-noi2coco", "name": $name, "default_branch_only": false}')
+            out=fork(https://api.github.com/repos/${repo}/forks, "$json")
+            message=$(jq -r ".message" <<< "$out")
+            echo "Message: $message"
+            if [ "$message" = "Not Found" ]; then
+              getrepo=$(gh api -H "Accept: application/vnd.github+json" /repos/${repo})
+              message=$(jq ".message" <<< "$getrepo") 
+              if [ "$message" = "Moved Permanently" ]; then
+                url=$(jq -r ".url" <<< "$getrepo")
+                echo "Forking $url" as "$json"
+                fork("$url", "$json")
+              fi
+            fi
+            sleep 5
           done
