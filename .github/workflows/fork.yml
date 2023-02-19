@@ -11,7 +11,7 @@ jobs:
           TOKEN: ${{ secrets.TOKEN }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          isforked() {
+          function isforked {
             for repo in $1; do
               # check if the current $repo has already been forked
               for fork in $forks; do
