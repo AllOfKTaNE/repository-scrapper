@@ -18,6 +18,7 @@ jobs:
                 if [ "$2" = "$fork" ]; then
                   return 0
                 fi
+              done
             done
             return 1
           }
