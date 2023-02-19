@@ -49,8 +49,8 @@ jobs:
             # Fork the new repository
             json=$(jq -n --arg name "$repo" '{"organization":"KTaNE-noi2coco", "name": $name, "default_branch_only": false}')
             echo "Forking $repo" as "$repo"
-            out=fork https://api.github.com/repos/${repo}/forks "$json"
-            
+            out=$(fork https://api.github.com/repos/${repo}/forks "$json")
+
             # Repo moved?
             message=$(jq -r ".message" <<< "$out")
             echo "Message: $message"
