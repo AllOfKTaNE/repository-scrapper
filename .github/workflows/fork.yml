@@ -42,7 +42,7 @@ jobs:
 
           for repo in $repos; do
             forkname=$(echo "$repo" | sed 's#/#-#g')
-            if isforked($forks, $forkname); then
+            if isforked("$forks", "$forkname"); then
               continue
             fi
             
