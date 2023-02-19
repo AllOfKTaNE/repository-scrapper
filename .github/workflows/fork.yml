@@ -31,7 +31,7 @@ jobs:
             if [ $forked -eq 1 ]; then
               continue
             fi
-            
+
             # Fork the new repository
             echo "Forking $repo"
             json=$(jq -n --arg name "$repo" '{"organization":"KTaNE-noi2coco", "name": $name, "default_branch_only": false}')
@@ -43,7 +43,7 @@ jobs:
               https://api.github.com/repos/${repo}/forks \
               -d "$json")
             if [ $(jq ".message" "$out") = "Not Found" ]; then
-              newlocation=$(gh api -H "Accept: application/vnd.github+json" /repos/$repo)
+              newlocation=$(gh api -H "Accept: application/vnd.github+json" /repos/${repo})
               if [ $(jq ".message" "$newlocation") = "Moved Permanently" ]; then
                 curl \
                   -X POST \
