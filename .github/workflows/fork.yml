@@ -12,7 +12,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # get source code links from ktane.timwi.de
-          repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-6)
+          repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-5)
           # get list of forked repositories
           forks=$(gh api \
             -H "Accept: application/vnd.github+json" \
