@@ -62,7 +62,11 @@ jobs:
               if [ "$message" = "Moved Permanently" ]; then
                 url=$(jq -r ".url" <<< "$getrepo")
                 echo "Forking $url" as "$repo"
-                fork "$url" "$json"
+                out=$(fork "$url" "$json")
+                message=$(jq -r ".message" <<< "$out")
+                if [ "$message" = "Name already exists on this account" ]; then
+                  continue
+                fi
               fi
             fi
             sleep 5
