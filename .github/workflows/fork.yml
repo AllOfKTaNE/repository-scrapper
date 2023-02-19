@@ -24,6 +24,7 @@ jobs:
             forked=0
             forkname=$(echo "$repo" | sed 's#/#-#g')
             for fork in $forks; do
+              echo Comparing "$forkname" and "$fork"
               if [ "$forkname" = "$fork" ]; then
                 forked=1
                 break
