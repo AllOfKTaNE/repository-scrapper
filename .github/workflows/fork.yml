@@ -12,8 +12,29 @@ jobs:
       - env:
           TOKEN: ${{ secrets.TOKEN }}
         run: |
-          repos=$(curl https://ktane.timwi.de/json/raw | jq ".KtaneModules[].SourceUrl | select( . != null)" | sed 's#"https://github.com/\(.*\)"#\1#')
+          # get source code links from ktane.timwi.de
+          repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-)
+          # get list of forked repositories
+          forks=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            /orgs/KTaNE-noi2coco/repos | jq -r '.[].name') 
+
           for repo in $repos; do
+            # check if the current $repo has already been forked
+            forked=0
+            forkname=$(echo "$repo" | sed 's#/#-#g')
+            echo "comparing $forkname"
+            for fork in forks; do
+              if [ "$forkname" = "$fork" ]; then
+                forked=1
+                break
+              fi
+            done
+            if [ $forked -eq 1 ]; then
+              continue
+            fi
+            
+            # Fork the new repository
             echo "Forking $repo"
             json=$(jq -n --arg name "$repo" '{"organization":"KTaNE-noi2coco", "name": $name, "default_branch_only": false}')
             curl \
@@ -23,6 +44,4 @@ jobs:
               -H "X-GitHub-Api-Version: 2022-11-28" \
               https://api.github.com/repos/${repo}/forks \
               -d "$json"
-            exit 0
           done
-          
