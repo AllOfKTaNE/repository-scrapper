@@ -12,10 +12,12 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           function isforked {
+            echo "Checking if $2 is already forked"
             for repo in $1; do
               # check if the current $repo has already been forked
               for fork in $forks; do
                 if [ "$2" = "$fork" ]; then
+                  echo "Fork found, skipping"
                   return 0
                 fi
               done
