@@ -23,8 +23,7 @@ jobs:
             # check if the current $repo has already been forked
             forked=0
             forkname=$(echo "$repo" | sed 's#/#-#g')
-            echo "comparing $forkname"
-            for fork in forks; do
+            for fork in $forks; do
               if [ "$forkname" = "$fork" ]; then
                 forked=1
                 break
