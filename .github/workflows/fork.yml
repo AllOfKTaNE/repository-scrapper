@@ -6,11 +6,10 @@ on:
 jobs:
   use_api:
     runs-on: ubuntu-latest
-    permissions: write-all
-
     steps:
       - env:
           TOKEN: ${{ secrets.TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # get source code links from ktane.timwi.de
           repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-)
