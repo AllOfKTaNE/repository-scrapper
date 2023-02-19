@@ -48,7 +48,7 @@ jobs:
             
             # Fork the new repository
             json=$(jq -n --arg name "$repo" '{"organization":"KTaNE-noi2coco", "name": $name, "default_branch_only": false}')
-            echo "Forking $repo" as "$json"
+            echo "Forking $repo" as "$repo"
             out=fork https://api.github.com/repos/${repo}/forks "$json"
             
             # Repo moved?
@@ -59,7 +59,7 @@ jobs:
               message=$(jq ".message" <<< "$getrepo") 
               if [ "$message" = "Moved Permanently" ]; then
                 url=$(jq -r ".url" <<< "$getrepo")
-                echo "Forking $url" as "$json"
+                echo "Forking $url" as "$repo"
                 fork "$url" "$json"
               fi
             fi
