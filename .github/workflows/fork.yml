@@ -34,7 +34,7 @@ jobs:
               $1/forks \
               -d "$2")
             REPOS="$REPOS;$3"
-
+            return $ret
           }
 
           # get source code links from ktane.timwi.de
