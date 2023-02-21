@@ -57,10 +57,9 @@ jobs:
             echo "Message: $message"
             if [ "$message" = "Not Found" ]; then
               getrepo=$(gh api -H "Accept: application/vnd.github+json" /repos/${repo})
-              message=$(jq ".message" <<< "$getrepo")
-              echo "Get repo answer: $message"
-              if [ "$message" = "Moved Permanently" ]; then
-                url=$(jq -r ".url" <<< "$getrepo")
+              url=$(jq -r ".url" <<< "$getrepo")
+              echo "Get repo answer: $url"
+              if [ "$url" != "null" ]; then
                 echo "Forking $url" as "$repo"
                 out=$(fork "$url" "$json")
                 message=$(jq -r ".message" <<< "$out")
