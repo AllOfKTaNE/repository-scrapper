@@ -60,7 +60,7 @@ jobs:
               url=$(jq -r ".url" <<< "$getrepo")
               echo "Get repo answer: $url"
               if [ "$url" != "null" ]; then
-                echo "Forking $url" as "$repo"
+                echo "Forking $url" as "$repo, payload: $json"
                 out=$(fork "$url" "$json")
                 message=$(jq -r ".message" <<< "$out")
                 if [ "$message" = "Name already exists on this account" ]; then
@@ -71,7 +71,7 @@ jobs:
                 fi
               fi
             fi
-            sleep 5
+            sleep 10
             ##!!!
             exit 0
           done
