@@ -67,9 +67,7 @@ jobs:
               fi
             fi
             REPOS="$REPOS;$repo"
-            sleep 3
-            ##!!!
-            break
+            sleep 2
           done
           
           # Update the list of forks repository variable
