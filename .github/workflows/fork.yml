@@ -12,15 +12,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           function isforked {
-            echo "Checking if $2 is already forked"
+            echo "Checking if $1 is already forked"
             # check if the current $repo has already been forked
-            for fork in $1; do
-              if [ "$2" = "$fork" ]; then
+            case "$REPOS" in 
+              *"$1"*)
                 echo "Fork found, skipping"
                 return 0
-              fi
-            done
-            echo "No fork found for $2"
+              ;;
+            esac
+            echo "No fork found for $1"
             return 1
           }
 
@@ -37,19 +37,18 @@ jobs:
           # get source code links from ktane.timwi.de
           repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-5)
           # get list of forked repositories
-          forks=$(gh api \
-            -H "Accept: application/vnd.github+json" \
-           /orgs/KTaNE-noi2coco/repos | jq -r '.[].name')
-
+          
           for repo in $repos; do
             forkname=$(echo "$repo" | sed 's#/#-#g')
-            if isforked "$forks" "$forkname"; then
+            if isforked "$forkname"; then
               continue
             fi
             
             # Fork the new repository
             json=$(jq -n --arg name "$repo" '{"organization":"KTaNE-noi2coco", "name": $name, "default_branch_only": false}')
             echo "Forking $repo" as "$repo"
+            # !!!
+            continue
             out=$(fork https://api.github.com/repos/${repo}/forks "$json")
             echo "out = $out"
 
