@@ -14,9 +14,9 @@ jobs:
         run: |
           function isforked {
             # check if the current $repo has already been forked
-            case "$REPOS" in 
-              *"$1"*)
-                echo "Fork found for $1, skipping"
+            case "$1" in 
+              *"$2"*)
+                echo "Fork found for $2, skipping"
                 return 0
               ;;
             esac
@@ -39,7 +39,7 @@ jobs:
           
           for repo in $repos; do
             forkname=$(echo "$repo" | sed 's#/#-#g')
-            if isforked "$forkname"; then
+            if isforked "$REPOS" "$forkname"; then
               continue
             fi
             
