@@ -31,6 +31,10 @@ jobs:
               $1/forks \
               -d "$2"
           }
+          
+          function reponame {
+            sed 's#/#-#g' <<< "$1"
+          }
 
           # get source code links from ktane.timwi.de
           repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-5)
@@ -52,7 +56,7 @@ jobs:
             message=$(jq -r ".message" <<< "$out")
             echo "Message: $message"
             if [[ "$message" == *"already exists"* ]]; then
-              REPOS="$REPOS;$repo"
+              REPOS="$REPOS;$(reponame "$repo")"
             elif [[ "$message" == *"too quickly"* ]]; then
               break
             elif [ "$message" = "Not Found" ]; then
@@ -69,7 +73,7 @@ jobs:
                 fi
               fi
             fi
-            REPOS="$REPOS;$repo"
+            REPOS="$REPOS;$(reponame "$repo")"
             sleep 2
           done
           
