@@ -72,13 +72,13 @@ jobs:
                 fi
               fi
             fi
-            sleep 10
+            sleep 3
             ##!!!
             break
           done
           
           # Update the list of forks repository variable
-          payload=$(jq -n --arg repos "$REPOS" '{"name":"REPOS","value": $repos}'
+          payload=$(jq -n --arg repos "$REPOS" '{"name":"REPOS","value": $repos}')
           curl \
             -X PATCH \
             -H "Accept: application/vnd.github+json" \
