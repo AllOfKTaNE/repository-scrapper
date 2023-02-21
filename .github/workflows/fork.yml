@@ -54,7 +54,7 @@ jobs:
             message=$(jq -r ".message" <<< "$out")
             echo "Message: $message"
             if [ "$message" = "Not Found" ]; then
-              getrepo=$(gh api -H "Accept: application/vnd.github+json" /repos/${repo} || "")
+              getrepo=$(gh api -H "Accept: application/vnd.github+json" /repos/${repo} || echo "")
               url=$(jq -r ".url" <<< "$getrepo")
               echo "Get repo answer: $url"
               if [ "$url" != "null" ]; then
