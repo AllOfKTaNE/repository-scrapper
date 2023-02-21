@@ -65,12 +65,13 @@ jobs:
                 message=$(jq -r ".message" <<< "$out")
                 if [ "$message" = "Name already exists on this account" ]; then
                   ##!!!
-                  return
+                  echo "$repo alreay exists"
+                  exit 0
                   continue
                 fi
               fi
             fi
             sleep 5
             ##!!!
-            return
+            exit 0
           done
