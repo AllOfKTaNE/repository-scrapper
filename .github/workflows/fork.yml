@@ -13,11 +13,10 @@ jobs:
           REPOS: ${{ vars.REPOS }}
         run: |
           function isforked {
-            echo "Checking if $1 is already forked"
             # check if the current $repo has already been forked
             case "$REPOS" in 
               *"$1"*)
-                echo "Fork found, skipping"
+                echo "Fork found for $1, skipping"
                 return 0
               ;;
             esac
