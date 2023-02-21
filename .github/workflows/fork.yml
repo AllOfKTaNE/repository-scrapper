@@ -14,7 +14,7 @@ jobs:
           function isforked {
             echo "Checking if $1 is already forked"
             # check if the current $repo has already been forked
-            case "$REPOS" in 
+            case "${{ vars.REPOS }}" in 
               *"$1"*)
                 echo "Fork found, skipping"
                 return 0
@@ -37,6 +37,7 @@ jobs:
           # get source code links from ktane.timwi.de
           repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-5)
           # get list of forked repositories
+          echo "Current forks: ${{ vars.REPOS }}
           
           for repo in $repos; do
             forkname=$(echo "$repo" | sed 's#/#-#g')
