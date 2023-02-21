@@ -37,7 +37,7 @@ jobs:
           # get source code links from ktane.timwi.de
           repos=$(curl https://ktane.timwi.de/json/raw | jq -r ".KtaneModules[].SourceUrl | select( . != null)" | cut -d/ -f4-5)
           # get list of forked repositories
-          echo "Current forks: ${{ vars.REPOS }}
+          echo "Current forks: ${{ vars.REPOS }}"
           
           for repo in $repos; do
             forkname=$(echo "$repo" | sed 's#/#-#g')
