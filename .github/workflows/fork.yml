@@ -52,9 +52,9 @@ jobs:
             # Repo moved?
             message=$(jq -r ".message" <<< "$out")
             echo "Message: $message"
-            if [[ "$message" == *"already exists"* ]];; then
+            if [[ "$message" == *"already exists"* ]]; then
               REPOS="$REPOS;$repo"
-            elif [[ "$message" == *"too quickly"* ]];; then
+            elif [[ "$message" == *"too quickly"* ]]; then
               break
             elif [ "$message" = "Not Found" ]; then
               getrepo=$(gh api -H "Accept: application/vnd.github+json" /repos/${repo} || echo "")
