@@ -70,7 +70,7 @@ jobs:
                 fi
               fi
             fi
+            sleep 5
             ##!!!
             return
-            sleep 5
           done
