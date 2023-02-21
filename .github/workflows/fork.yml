@@ -1,8 +1,8 @@
 name: Fork new repositories
 on:
-  workflow_dispatch
-  #schedule:
-  # - cron: '0 3 * * *'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
 jobs:
   use_api:
     runs-on: ubuntu-latest
