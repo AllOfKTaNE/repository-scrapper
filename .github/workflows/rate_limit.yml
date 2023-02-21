@@ -1,0 +1,13 @@
+name: Get rate limit
+on:
+  workflow_dispatch
+jobs:
+  request_rate_limit:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api \
+            -H "Accept: application/vnd.github+json" \
+            /rate_limit
