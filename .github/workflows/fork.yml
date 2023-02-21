@@ -48,8 +48,7 @@ jobs:
             # Fork the new repository
             json=$(jq -n --arg name "$repo" '{"organization":"KTaNE-noi2coco", "name": $name, "default_branch_only": false}')
             echo "Forking $repo" as "$repo"
-            # !!!
-            continue
+
             out=$(fork https://api.github.com/repos/${repo}/forks "$json")
             echo "out = $out"
 
@@ -65,9 +64,13 @@ jobs:
                 out=$(fork "$url" "$json")
                 message=$(jq -r ".message" <<< "$out")
                 if [ "$message" = "Name already exists on this account" ]; then
+                  ##!!!
+                  return
                   continue
                 fi
               fi
             fi
+            ##!!!
+            return
             sleep 5
           done
