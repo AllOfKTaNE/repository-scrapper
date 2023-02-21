@@ -18,7 +18,6 @@ jobs:
                 echo "Fork found for $2, skipping"
                 return 0
             fi
-            echo "No fork found for $2 in $1"
             return 1
           }
 
