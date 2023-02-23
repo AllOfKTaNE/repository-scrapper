@@ -19,7 +19,7 @@ jobs:
             getrepo=$(gh api \
                         -H "Accept: application/vnd.github+json" \
                         -H "X-GitHub-Api-Version: 2022-11-28" \
-                        "/repos/KTaNE-noi2coco/$repo")
+                        "/repos/KTaNE-noi2coco/$repo" || echo '{"message":"Not Found"}')
             echo "getrepo= $getrepo"
             message=$(jq -r ".message" <<< "$getrepo")
             [ "message" = "Not Found" ] && continue
