@@ -20,9 +20,11 @@ jobs:
             message=$(jq -r ".message" <<< "$getrepo")
             [ "message" = "Not Found" ] && continue
             default_branch=$(jq -r ".default_branch" <<< "$getrepo")
+            echo "default branch: $default_branch'
 
             # synchronize the fork with upstream
             payload=$(jq --arg branch "$default_branch" <<< '{"branch": $branch}')
+            echo "payload=$payload"
             curl \
               -X POST \
               -H "Accept: application/vnd.github+json" \
