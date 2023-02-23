@@ -12,6 +12,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOS: ${{ vars.REPOS }}
         run: |
+          which gh
           repos=$(sed 's#;#\n#g' <<< "$REPOS")
           for repo in $repos; do
             # get default branch name
