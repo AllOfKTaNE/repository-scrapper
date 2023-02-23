@@ -1,10 +1,10 @@
-name: Fork new repositories
+name: Synchronize forks
 on:
   workflow_dispatch:
   schedule:
     - cron: '0 23 * * *'
 jobs:
-  fork_repositories:
+  sync_forks:
     runs-on: ubuntu-latest
     steps:
       - env:
