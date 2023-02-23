@@ -12,9 +12,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOS: ${{ vars.REPOS }}
         run: |
-          which gh
-          repos=$(sed 's#;#\n#g' <<< "$REPOS")
-          for repo in $repos; do
+          IFS=';' read -ra repos <<< "$REPOS"
+          for repo in "${repos[@]:1}"; do
             # get default branch name
             getrepo=$(gh api -H "Accept: application/vnd.github+json" /repos/KTaNE-noi2coco/$repo)
             echo "getrepo= $getrepo"
