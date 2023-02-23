@@ -23,7 +23,7 @@ jobs:
             echo "default branch: $default_branch"
 
             # synchronize the fork with upstream
-            payload=$(jq --arg branch "$default_branch" <<< '{"branch": $branch}')
+            payload=$(jq -n --arg branch "$default_branch" <<< '{"branch": $branch}')
             echo "payload=$payload"
             curl \
               -X POST \
