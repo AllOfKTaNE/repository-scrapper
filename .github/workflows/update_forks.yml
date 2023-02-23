@@ -15,9 +15,9 @@ jobs:
           repos=$(sed 's#;#\n#g' <<< "$REPOS")
           for repo in $repos; do
             # get default branch name
-            default_branch=$(gh api
-                              -H "Accept: application/vnd.github+json"
-                              -H "X-GitHub-Api-Version: 2022-11-28"
+            default_branch=$(gh api \
+                              -H "Accept: application/vnd.github+json" \
+                              -H "X-GitHub-Api-Version: 2022-11-28" \
                               /repos/KTaNE-noi2coco/$repo | jq -r ".default_branch")
 
             # synchronize the fork with upstream
