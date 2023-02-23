@@ -22,7 +22,7 @@ jobs:
             default_branch=$(jq -r ".default_branch" <<< "$getrepo")
 
             # synchronize the fork with upstream
-            payload=$(jq --arg branch "$default_branch" <<< '{"branch": $branch}'
+            payload=$(jq --arg branch "$default_branch" <<< '{"branch": $branch}')
             curl \
               -X POST \
               -H "Accept: application/vnd.github+json" \
