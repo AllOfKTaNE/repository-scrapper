@@ -1,8 +1,8 @@
 name: Synchronize forks
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 23 * * *'
+  #schedule:
+  #  - cron: '0 23 * * *'
 jobs:
   sync_forks:
     runs-on: ubuntu-latest
